@@ -1,6 +1,6 @@
 const { EntitySchema } = require("typeorm");
 
-module.exports = new EntitySchema({
+const Clientes = new EntitySchema({
   name: "Clientes",
   tableName: "clientes",
   columns: {
@@ -10,17 +10,17 @@ module.exports = new EntitySchema({
       generated: true,
     },
     nombre: {
-      type: "varchar", 
+      type: "varchar",
       length: 25,
       nullable: false,
     },
     apellido: {
-      type: "varchar", 
+      type: "varchar",
       length: 25,
       nullable: false,
     },
     numero_tarjeta: {
-      type: "varchar", 
+      type: "varchar",
       length: 25,
       nullable: false,
       unique: true,
@@ -35,11 +35,11 @@ module.exports = new EntitySchema({
       nullable: false,
     },
     sueldo_neto: {
-      type: "decimal", 
-      precision: 10, 
-      scale: 2, 
-      nullable: false, 
-    }
+      type: "decimal",
+      precision: 10,
+      scale: 2,
+      nullable: false,
+    },
   },
   relations: {
     tarjetas: {
@@ -47,5 +47,15 @@ module.exports = new EntitySchema({
       target: "Tarjetas",
       inverseSide: "numero_tarjeta", // Asegúrate de que coincida con el nombre de la propiedad en la entidad Tarjetas
     },
+    producto: {
+      type: "many-to-one",
+      target: "Productos",
+      joinColumn: {
+        name: "productoId",
+        referencedColumnName: "id",
+      },
+    }, // Aquí se añadió la llave de cierre que faltaba
   },
 });
+
+module.exports = Clientes;

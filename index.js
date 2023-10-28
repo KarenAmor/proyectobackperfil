@@ -1,7 +1,10 @@
 const express = require("express");
 const { createConnection } = require("typeorm");
+const autenticacionMiddleware = require('./middleware/autenticacionMiddleware'); 
+
 const clientesRoutes = require("./routes/clientesRoutes");
 const loginRoutes = require("./routes/routesLogin");
+const aprobarTajetasRoutes = require("./routes/aprobarTarjetaRoutes"); 
 const { connectToDatabase } = require("./database");
 const bodyParser = require("body-parser");
 
@@ -16,7 +19,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/clientes", clientesRoutes);
-app.use("/login", loginRoutes );
+app.use("/login", loginRoutes);
+app.use("/aprobar-tarjeta", aprobarTajetasRoutes);
+
 
 // Inicia la aplicación en el puerto 3000
 app.listen(3000, () => {

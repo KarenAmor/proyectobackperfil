@@ -1,6 +1,6 @@
 const { EntitySchema } = require("typeorm");
 
-module.exports = new EntitySchema({
+const Tarjetas = new EntitySchema({
   name: "Tarjetas",
   tableName: "tarjetas",
   columns: {
@@ -31,6 +31,10 @@ module.exports = new EntitySchema({
       length: 20,
       nullable: true
     },
+    clienteId:{
+      type: "int",
+      nullable: true
+    },
     fecha_creacion: {
       type: "datetime",
       createDate: true
@@ -44,3 +48,5 @@ module.exports = new EntitySchema({
     },
   },
 });
+
+module.exports = Tarjetas;

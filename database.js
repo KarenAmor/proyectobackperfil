@@ -13,6 +13,7 @@ async function connectToDatabase() {
        require("./db/entities/Credenciales"),
        require("./db/entities/Tarjetas"),
        require("./db/entities/Asesores"),
+       require("./db/entities/Productos"),
       
       ],
     });

@@ -16,8 +16,9 @@ async function getClientes(req, res) {
 function generarNumeroTarjeta() {
   return Math.floor(Math.random() * 99999999999) + 10000000000;
 }
+// Genera un número aleatorio de tres dígitos
 function generarCodigoSeguridad() {
-  return Math.floor(100 + Math.random() * 900); // Genera un número aleatorio de tres dígitos
+  return Math.floor(100 + Math.random() * 900); 
 }
 
 async function crearCliente(req, res) {
@@ -37,7 +38,7 @@ async function crearCliente(req, res) {
 
   // Crear una nueva tarjeta para el cliente
   const tarjeta = tarjetasRepository.create({
-    numero_tarjeta: generarNumeroTarjeta(),
+    numero_tarjeta: cliente.numero_tarjeta,
     codigo_seguridad: generarCodigoSeguridad(),
     estado_solicitud: req.body.estado_solicitud || "pendiente" // Establece el estado_solicitud
   });
