@@ -1,4 +1,6 @@
 const express = require("express");
+const swaggerUiExpress = require("swagger-ui-express");
+const swaggerFile = require("./swagger.json");
 const { createConnection } = require("typeorm");
 const autenticacionMiddleware = require('./middleware/autenticacionMiddleware'); 
 
@@ -12,6 +14,8 @@ const app = express();
 
 // Configuracion bodyParser
 app.use(bodyParser.json());
+// Agrega swagger a la aplicación
+app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerFile));
 
 // Ruta para manejar la solicitud a la raíz de la aplicación
 app.get("/", (req, res) => {

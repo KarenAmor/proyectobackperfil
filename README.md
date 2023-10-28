@@ -1,6 +1,7 @@
 # Proyecto de Gestión de Clientes y Asesores
 
 Este proyecto es una aplicación de gestión de clientes y asesores desarrollada con Node.js y SQLite. La aplicación permite el registro de clientes y asesores, así como la autenticación y gestión de sesiones para diferentes roles de usuario.
+Tambien se le asignada o niega una tarjeta de credito al cliente
 
 ## Características
 
@@ -8,6 +9,7 @@ Este proyecto es una aplicación de gestión de clientes y asesores desarrollada
 - Registro de asesores con información personal y roles específicos.
 - Autenticación de usuarios a través de credenciales y verificación de contraseñas seguras con hash.
 - Diferenciación de roles entre clientes normales y asesores para gestionar distintos niveles de acceso.
+-Aprobacion o desaprobación de tarjeta de credito por parte de un asesor
 
 ## Tecnologías utilizadas
 
@@ -27,6 +29,19 @@ Este proyecto es una aplicación de gestión de clientes y asesores desarrollada
 ## Uso
 
 La aplicación proporciona endpoints para la gestión de clientes y asesores, así como para la autenticación y gestión de sesiones. Asegúrate de revisar la documentación de la API para obtener más detalles sobre cómo interactuar con la aplicación.
+
+## Swagger
+
+La aplicación tiene una documentación de swagger que se puede encontrar en la siguiente URL: http://localhost:3000/api-docs/#/
+
+## Servicios 
+1. Clientes: /clientes
+    - Lista de clientes sin visivilizar datos sensibles
+    - Crear clientes con su tarjeta y credenciales de login
+2. Inicio de sesiones: /login
+    - Logea el cliente e identifica si es asesor o no
+3. Aprobar tarjetas: /aprobar-tarjeta
+    - Aprueba o desaprueba creacion de tarjeta, generando el monto del prestamo y la categoria de la tarjeta
 
 ## Contribución
 

@@ -1,0 +1,236 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "API de Gestión de Clientes y Asesores",
+      "description": "Una API para gestionar clientes y asesores",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/api/clientes": {
+        "get": {
+          "description": "Obtiene una lista de clientes",
+          "responses": {
+            "200": {
+              "description": "La lista de clientes",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Cliente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "description": "Crea un nuevo cliente",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClienteInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "El cliente creado",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ClienteOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "api/iniciarSesion": {
+        "post": {
+          "summary": "Iniciar sesión",
+          "description": "Inicia sesión como cliente o asesor",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Credenciales"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Inicio de sesión exitoso",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      },
+                      "cliente": {
+                        "$ref": "#/components/schemas/Cliente"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Credenciales inválidas"
+            },
+            "404": {
+              "description": "Credenciales inválidas"
+            },
+            "500": {
+              "description": "Error al iniciar sesión"
+            }
+          }
+        }
+      },
+      "/aprobarTarjeta": {
+        "post": {
+          "summary": "Aprobar Tarjeta",
+          "description": "Aprueba la solicitud de una tarjeta y realiza operaciones adicionales",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TarjetaInput"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Tarjeta aprobada con éxito",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TarjetaOutput"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Acceso no autorizado"
+            },
+            "404": {
+              "description": "Tarjeta o cliente no encontrados"
+            },
+            "500": {
+              "description": "Error al aprobar la tarjeta"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Credenciales": {
+          "type": "object",
+          "properties": {
+            "dni": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "Cliente": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "nombre": {
+              "type": "string"
+            },
+            "apellido": {
+              "type": "string"
+            },
+            "dni": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "sueldo_neto": {
+              "type": "number"
+            }
+          }
+        },
+        "TarjetaInput": {
+          "type": "object",
+          "properties": {
+            "numero_tarjeta": {
+              "type": "integer"
+            },
+            "estado_solicitud": {
+              "type": "string"
+            }
+          }
+        },
+        "TarjetaOutput": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            },
+            "tarjeta": {
+              "$ref": "#/components/schemas/Tarjeta"
+            }
+          }
+        },
+        "Tarjeta": {
+          "type": "object",
+          "properties": {
+            "numero_tarjeta": {
+              "type": "integer"
+            },
+            "codigo_seguridad": {
+              "type": "integer"
+            },
+            "estado_solicitud": {
+              "type": "string"
+            },
+            "tipo_tarjeta": {
+              "type": "integer"
+            },
+            "monto_disponible": {
+              "type": "number"
+            },
+            "id": {
+              "type": "integer"
+            },
+            "fecha_creacion": {
+              "type": "string"
+            },
+            "producto_adquirido": {
+              "$ref": "#/components/schemas/Producto"
+            }
+          }
+        },
+        "Producto": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "nombre_producto": {
+              "type": "string"
+            },
+            "intereses": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
