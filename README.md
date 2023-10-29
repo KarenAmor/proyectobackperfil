@@ -11,7 +11,7 @@
 - Registro de asesores con información personal y roles específicos.
 - Autenticación de usuarios a través de credenciales y verificación de contraseñas seguras con hash.
 - Diferenciación de roles entre clientes normales y asesores para gestionar distintos niveles de acceso.
--Aprobacion o desaprobación de tarjeta de credito por parte de un asesor
+- Aprobacion o desaprobación de tarjeta de credito por parte de un asesor
 
 ## Tecnologías utilizadas
 
@@ -26,13 +26,21 @@
 ## Estructura del Proyecto
 
 |-- controllers
+
 |-- database
+
 |-- db
+
     |-- entities
+
 |-- util
+
 |-- node_modules
+
 |-- index.js
+
 |-- package.json
+
 |-- README.md
 
 
