@@ -3,7 +3,7 @@ const { connectToDatabase } = require("../database");
 const Tarjetas = require("../db/entities/Tarjetas");
 const Clientes = require("../db/entities/Clientes");
 const Productos = require("../db/entities/Productos");
-
+const sendMail = require('../util/correoAprobacionTarjeta');
 async function aprobarTarjeta(req, res) {
   const connection = await connectToDatabase();
   const tarjetasRepository = getRepository(Tarjetas);
@@ -81,6 +81,13 @@ res.send({
     }
   }
 });
+// Aquí se envía el correo electrónico al cliente
+const email = cliente.email; // Puedes cambiarlo para que sea el correo del cliente
+const subject = 'Aprobación de tarjeta';
+const templatePath = '../util/emailTemplate.html';
+
+  await sendMail(email, subject, templatePath);
+
 } catch (error) {
 console.error("Error al aprobar la tarjeta:", error);
 res.status(500).send({ error: "Error al aprobar la tarjeta" });

@@ -5,8 +5,8 @@ const { createConnection } = require("typeorm");
 const autenticacionMiddleware = require('./middleware/autenticacionMiddleware'); 
 
 const clientesRoutes = require("./routes/clientesRoutes");
-const loginRoutes = require("./routes/routesLogin");
-const aprobarTajetasRoutes = require("./routes/aprobarTarjetaRoutes"); 
+const loginRoutes = require("./routes/loginRoutes");
+const aprobarTajetasRoutes = require("./routes/aprobarTarjetasRoutes"); 
 const { connectToDatabase } = require("./database");
 const bodyParser = require("body-parser");
 
