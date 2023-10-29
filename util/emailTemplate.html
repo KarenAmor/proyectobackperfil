@@ -1,12 +1,59 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Correo electrónico de aprobación de tarjeta de crédito</title>
+  <style>
+    body {
+      background-color: #f3ebf6;
+      font-family: sans-serif;
+      font-size: 16px;
+      color: #333;
+    }
+
+    h1 {
+      color: #6a0dad;
+      font-size: 24px;
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 10px;
+      color: #4a4a4a;
+    }
+
+    p.saludos {
+      margin-top: 20px;
+    }
+
+    .tarjeta {
+      background-color: #e8d6f8;
+      border-color: #2ecc71;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .tarjeta .titulo {
+      font-weight: bold;
+    }
+
+    .tarjeta .valor {
+      font-size: 18px;
+    }
+  </style>
+</head>
 <body>
-  <h1>Bienvenido a nuestra aplicación</h1>
-  <p>Estimado usuario,</p>
+  <h1>Bienvenido</h1>
+  <p class="saludos">Estimado usuario, <%= nombre %> <%= apellido %></p>
   <p>Gracias por registrarte en nuestro servicio. Esperamos que disfrutes de tu experiencia con nosotros.</p>
-  <p>Su tarjeta de credito {{numero_tarjeta}} ha sido aprobada con categoria {{tipo_tarjeta}} y un monto de 
-    {{monto_disponible}}</p>
+  <p class="tarjeta">
+    <strong class="titulo">Su tarjeta de crédito</strong>
+    <strong class="valor">N° <%= numero_tarjeta %></strong>
+    <strong class="valor">ha sido aprobada con categoria <%= tipo_tarjeta %></strong>
+    <strong class="valor">y un monto de <%= monto_disponible %> pesos</strong>
+  </p>
   <p>Saludos,</p>
-  <p>El equipo de nuestro servicio</p>
+  <p>Karen Moreno</p>
 </body>
 </html>

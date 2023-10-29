@@ -1,7 +1,9 @@
 # Proyecto de Gestión de Clientes y Asesores
 
-Este proyecto es una aplicación de gestión de clientes y asesores desarrollada con Node.js y SQLite. La aplicación permite el registro de clientes y asesores, así como la autenticación y gestión de sesiones para diferentes roles de usuario.
-Tambien se le asignada o niega una tarjeta de credito al cliente
+- Este proyecto es una aplicación de gestión de clientes y asesores que permite el registro de clientes y asesores, así como la autenticación y gestión de sesiones para diferentes roles de usuario.
+- Se implementa la funcionalidad para la aprobación de tarjetas de crédito. Permite a los asesores realizar el seguimiento de las solicitudes de tarjetas de los clientes y aprobarlas según ciertos criterios predefinidos: se cálcula el monto disponible la categorías de tarjetas según el rango de sueldo neto.
+- Envío de correos electrónicos de notificación al cliente una vez que la tarjeta ha sido aprobada.
+
 
 ## Características
 
@@ -18,6 +20,21 @@ Tambien se le asignada o niega una tarjeta de credito al cliente
 - TypeORM para la configuración y gestión de la base de datos.
 - Express.js para el enrutamiento y la creación de API.
 - Bcrypt para el hashing de contraseñas y garantizar la seguridad de las credenciales.
+- Nodemailer para enviar correos electrónicos
+- Ethereal Email permite visualizar los correos electrónicos enviados desde tu aplicación sin necesidad de utilizar un servidor de correo real.
+
+## Estructura del Proyecto
+
+|-- controllers
+|-- database
+|-- db
+    |-- entities
+|-- util
+|-- node_modules
+|-- index.js
+|-- package.json
+|-- README.md
+
 
 ## Configuración del proyecto
 
@@ -26,9 +43,6 @@ Tambien se le asignada o niega una tarjeta de credito al cliente
 3. Asegúrate de tener Node.js y npm instalados en tu sistema.
 4. Ejecuta el servidor con `npm start` y accede a la aplicación en `http://localhost:3000`.
 
-## Uso
-
-La aplicación proporciona endpoints para la gestión de clientes y asesores, así como para la autenticación y gestión de sesiones. Asegúrate de revisar la documentación de la API para obtener más detalles sobre cómo interactuar con la aplicación.
 
 ## Swagger
 
@@ -41,7 +55,7 @@ La aplicación tiene una documentación de swagger que se puede encontrar en la 
 2. Inicio de sesiones: /login
     - Logea el cliente e identifica si es asesor o no
 3. Aprobar tarjetas: /aprobar-tarjeta
-    - Aprueba o desaprueba creacion de tarjeta, generando el monto del prestamo y la categoria de la tarjeta
+    - Aprueba o desaprueba creacion de tarjeta, generando el monto del prestamo y la categoria de la tarjeta, al mismo tiempo que envia un correo informativo
 
 ## Contribución
 
@@ -53,4 +67,19 @@ Este proyecto fue creado por [Karen Moreno].
 
 ## Licencia
 
-Este proyecto está licenciado bajo [nombre de la licencia]. Consulta el archivo LICENSE para obtener más detalles.
+Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE para obtener más detalles.
+
+
+## Mejoras pendientes
+- Creacion de usuario los datos deben se unicos y validados
+- No enviar correo si la tarjeta se rechaza
+- Actualizar swagger
+
+## Funcionalidades Pendiente
+- Creacion de asesor
+- Actualizar cliente
+- Eliminar cliente
+- Modificar y Recuperar contraseña
+- Visivilizar tarjetas pendientes
+- Realizar transaccion
+- Inteses de las transacciones
