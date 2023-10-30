@@ -80,8 +80,6 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 
 ## Mejoras pendientes
 - Creacion de usuario los datos deben se unicos y validados
-- No enviar correo si la tarjeta se rechaza
-- Actualizar swagger
 
 ## Funcionalidades Pendiente
 - Creacion de asesor

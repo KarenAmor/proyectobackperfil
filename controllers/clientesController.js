@@ -62,4 +62,41 @@ async function crearCliente(req, res) {
   }
 }
 
-module.exports = { getClientes, crearCliente };
+async function actualizarCliente(req, res) {
+  const connection = await connectToDatabase();
+  const clientRepository = getRepository(Clientes);
+
+  const { id } = req.params; // Suponiendo que el id del cliente se pasa como parámetro
+
+  try {
+    const cliente = await clientRepository.findOne({ where: { id: id } });
+    if (!cliente) {
+      return res.status(404).send({ message: "Cliente no encontrado" });
+    }
+
+    // Actualiza los campos del cliente según lo que se haya proporcionado en la solicitud
+    if (req.body.nombre) {
+      cliente.nombre = req.body.nombre;
+    }
+    if (req.body.apellido) {
+      cliente.apellido = req.body.apellido;
+    }
+    if (req.body.dni) {
+      cliente.dni = req.body.dni;
+    }
+    if (req.body.email) {
+      cliente.email = req.body.email;
+    }
+    if (req.body.sueldo_neto) {
+      cliente.sueldo_neto = req.body.sueldo_neto;
+    }
+
+    await clientRepository.save(cliente);
+    res.send({ message: "Cliente actualizado con éxito", cliente: cliente });
+  } catch (error) {
+    console.error("Error al actualizar el cliente:", error);
+    res.status(500).send({ error: "Error al actualizar el cliente" });
+  }
+}
+
+module.exports = { getClientes, crearCliente, actualizarCliente };

@@ -80,8 +80,11 @@ const subject = 'Aprobación de tarjeta';
 const templatePath = '../util/emailTemplate.html';
 
 // Llamar a la función sendMail con los valores necesarios
-await sendMail(email, subject, templatePath, cliente.nombre, cliente.apellido, tarjeta.numero_tarjeta, categoria, tarjeta.monto_disponible);
-  } catch (error) {
+if (estado_solicitud !== 'rechazado') {
+  await sendMail(email, subject, templatePath, cliente.nombre, cliente.apellido, tarjeta.numero_tarjeta, categoria, tarjeta.monto_disponible);
+}
+
+} catch (error) {
     console.error("Error al aprobar la tarjeta:", error);
     res.status(500).send({ error: "Error al aprobar la tarjeta" });
   }

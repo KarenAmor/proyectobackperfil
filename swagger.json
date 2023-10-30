@@ -36,6 +36,14 @@
             "description": "Cliente creado"
           }
         }
+      },
+      "put": {
+        "tags": ["Clientes"],
+        "responses": {
+          "200": {
+            "description": "Cliente actualizado con éxito"
+          }
+        }
       }
     },
     "/iniciarSesion": {
