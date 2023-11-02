@@ -88,4 +88,3 @@ async function actualizarAsesor(req, res) {
   }
   
   module.exports = { getAsesores, crearAsesor, actualizarAsesor, eliminarAsesor };
-  

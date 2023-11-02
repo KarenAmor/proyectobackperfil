@@ -28,6 +28,16 @@ app.use("/login", loginRoutes);
 app.use("/aprobar-tarjeta", aprobarTajetasRoutes);
 app.use("/asesores", asesoresRoutes);
 
+/* Catch Validation error */
+app.use((err, req, res, next) => {
+  if (err && err.error && err.error.isJoi) {
+    res.status(400).json({
+      type: err.type, // will be "query" here, but could be "headers", "body", or "params"
+      error: err.error.toString()
+    });
+  } else { next(err); }
+});
+
 
 // Inicia la aplicación en el puerto 3000
 app.listen(3000, () => {
