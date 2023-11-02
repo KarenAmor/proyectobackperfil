@@ -5,6 +5,19 @@ const Clientes = require("../db/entities/Clientes");
 const Productos = require("../db/entities/Productos");
 const sendMail = require('../util/correoAprobacionTarjeta');
 
+async function getTarjetas(req, res) {
+  const connection = await connectToDatabase();
+  const tarjetasRepository = getRepository(Tarjetas);
+
+  try {
+    const tarjetas = await tarjetasRepository.find();
+    res.status(200).json(tarjetas);
+  } catch (error) {
+    console.error("Error al obtener las tarjetas:", error);
+    res.status(500).send({ error: "Error al obtener las tarjetas" });
+  }
+}
+
 async function aprobarTarjeta(req, res) {
   const connection = await connectToDatabase();
   const tarjetasRepository = getRepository(Tarjetas);
@@ -63,7 +76,7 @@ async function aprobarTarjeta(req, res) {
 
     const producto = await productosRepository.findOne({ where: { id: tarjeta.tipo_tarjeta } });
 
-    res.send({
+    res.status(201).json({
       message: "Tarjeta aprobada con éxito",
       tarjeta: {
         ...tarjeta,
@@ -89,5 +102,29 @@ if (estado_solicitud !== 'rechazado') {
     res.status(500).send({ error: "Error al aprobar la tarjeta" });
   }
 }
+async function eliminarTarjeta(req, res) {
+  try {
+    const connection = await connectToDatabase();
+    const tarjetasRepository = getRepository(Tarjetas);
+    const { id } = req.params.id;
 
-module.exports = { aprobarTarjeta };
+    if (req.user.role !== "asesor") {
+      return res.status(401).send({ message: "Acceso no autorizado" });
+    }
+
+    const tarjeta = await tarjetasRepository.findOne({ where: { id: id } });
+
+    if (!tarjeta) {
+      return res.status(404).send({ message: "Tarjeta no encontrada" });
+    }
+
+    await tarjetasRepository.remove(tarjeta);
+
+    res.status(200).json({ message: "Tarjeta eliminada con éxito" });
+  } catch (error) {
+    console.error("Error al eliminar la tarjeta:", error);
+    res.status(500).send({ error: "Error al eliminar la tarjeta" });
+  }
+}
+
+module.exports = { getTarjetas, aprobarTarjeta, eliminarTarjeta };

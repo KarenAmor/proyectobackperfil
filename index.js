@@ -2,13 +2,14 @@ const express = require("express");
 const swaggerUiExpress = require("swagger-ui-express");
 const swaggerFile = require("./swagger.json");
 const { createConnection } = require("typeorm");
+const { connectToDatabase } = require("./database");
+const bodyParser = require("body-parser");
 const autenticacionMiddleware = require('./middleware/autenticacionMiddleware'); 
 
 const clientesRoutes = require("./routes/clientesRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const aprobarTajetasRoutes = require("./routes/aprobarTarjetasRoutes"); 
-const { connectToDatabase } = require("./database");
-const bodyParser = require("body-parser");
+const asesoresRoutes = require("./routes/asesoresRoutes");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 app.use("/clientes", clientesRoutes);
 app.use("/login", loginRoutes);
 app.use("/aprobar-tarjeta", aprobarTajetasRoutes);
+app.use("/asesores", asesoresRoutes);
 
 
 // Inicia la aplicación en el puerto 3000

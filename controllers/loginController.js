@@ -32,7 +32,7 @@ async function iniciarSesion(req, res) {
     const asesor = await asesoresRepository.findOne({ where: { dni } });
 
     if (asesor) {
-      res.send({ message: "Inicio de sesión exitoso, Asesor", cliente });
+      res.status(200).json({ message: "Inicio de sesión exitoso, Asesor", cliente });
     } else {
       res.send({ message: "Inicio de sesión exitoso, Bienvenido", cliente });
     }

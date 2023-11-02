@@ -17,6 +17,10 @@
     {
       "name": "Tarjetas",
       "description": "Operaciones relacionadas con las tarjetas"
+    },
+    {
+      "name": "Asesores",
+      "description": "Operaciones relacionadas con los asesores"
     }
   ],
   "paths": {
@@ -44,6 +48,14 @@
             "description": "Cliente actualizado con éxito"
           }
         }
+      },
+      "delete": {
+        "tags": ["Clientes"],
+        "responses": {
+          "200": {
+            "description": "Cliente eliminado con éxito"
+          }
+        }
       }
     },
     "/iniciarSesion": {
@@ -57,11 +69,61 @@
       }
     },
     "/aprobarTarjeta": {
+      "get": {
+        "tags": ["Tarjetas"],
+        "responses": {
+          "200": {
+            "description": "Listado de tarjetas"
+          }
+        }
+      },
       "post": {
         "tags": ["Tarjetas"],
         "responses": {
           "200": {
             "description": "Tarjeta aprobada con éxito"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Tarjetas"],
+        "responses": {
+          "200": {
+            "description": "Tarjeta eliminada con éxito"
+          }
+        }
+      }
+    },
+    "/asesores": {
+      "get": {
+        "tags": ["Asesores"],
+        "responses": {
+          "200": {
+            "description": "Asesor y credenciales creadas con éxito"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Asesores"],
+        "responses": {
+          "201": {
+            "description": "Asesor y credenciales creadas"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Asesores"],
+        "responses": {
+          "200": {
+            "description": "Asesor actualizado con éxito"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Asesores"],
+        "responses": {
+          "200": {
+            "description": "Asesor eliminado con éxito"
           }
         }
       }

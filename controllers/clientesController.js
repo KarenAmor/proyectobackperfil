@@ -9,7 +9,7 @@ async function getClientes(req, res) {
   const connection = await connectToDatabase();
   const clientRepository = getRepository(Clientes);
   const clientes = await clientRepository.find();
-  res.send(clientes);
+  res.status(200).json(clientes);
 }
 
 // Genera un número de tarjeta aleatorio
@@ -55,7 +55,7 @@ async function crearCliente(req, res) {
 
   try {
     await credentialsRepository.save(credenciales);
-    res.send({ message: "Cliente y credenciales creadas con éxito", cliente: clienteNuevo, tarjeta: newTarjeta, credenciales: credenciales });
+    res.status(201).json({ message: "Cliente y credenciales creadas con éxito", cliente: clienteNuevo, tarjeta: newTarjeta, credenciales: credenciales });
   } catch (error) {
     console.error("Error al guardar las credenciales:", error);
     res.status(500).send({ error: "Hubo un error al guardar las credenciales" });
@@ -92,11 +92,30 @@ async function actualizarCliente(req, res) {
     }
 
     await clientRepository.save(cliente);
-    res.send({ message: "Cliente actualizado con éxito", cliente: cliente });
+    res.status(201).json({ message: "Cliente actualizado con éxito", cliente: cliente });
   } catch (error) {
     console.error("Error al actualizar el cliente:", error);
     res.status(500).send({ error: "Error al actualizar el cliente" });
   }
 }
+async function eliminarCliente(req, res) {
+  const connection = await connectToDatabase();
+  const clientRepository = getRepository(Clientes);
 
-module.exports = { getClientes, crearCliente, actualizarCliente };
+  const { id } = req.params; // Suponiendo que el id del cliente se pasa como parámetro
+
+  try {
+    const cliente = await clientRepository.findOne({ where: { id: id } });
+    if (!cliente) {
+      return res.status(404).send({ message: "Cliente no encontrado" });
+    }
+
+    await clientRepository.remove(cliente); // Elimina el cliente de la base de datos
+    res.status(200).json({ message: "Cliente eliminado con éxito", cliente: cliente });
+  } catch (error) {
+    console.error("Error al eliminar el cliente:", error);
+    res.status(500).send({ error: "Error al eliminar el cliente" });
+  }
+}
+
+module.exports = { getClientes, crearCliente, actualizarCliente, eliminarCliente };

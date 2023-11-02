@@ -80,11 +80,10 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 
 ## Mejoras pendientes
 - Creacion de usuario los datos deben se unicos y validados
+- Validaciones con joi
+- pruebas unitarias con jest
 
 ## Funcionalidades Pendiente
-- Creacion de asesor
-- Actualizar cliente
-- Eliminar cliente
 - Modificar y Recuperar contraseña
 - Visivilizar tarjetas pendientes
 - Realizar transaccion
