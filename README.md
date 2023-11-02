@@ -12,6 +12,7 @@
 - Autenticación de usuarios a través de credenciales y verificación de contraseñas seguras con hash.
 - Diferenciación de roles entre clientes normales y asesores para gestionar distintos niveles de acceso.
 - Aprobacion o desaprobación de tarjeta de credito por parte de un asesor
+- transacciones entre cuentas
 
 ## Tecnologías utilizadas
 
@@ -22,6 +23,8 @@
 - Bcrypt para el hashing de contraseñas y garantizar la seguridad de las credenciales.
 - Nodemailer para enviar correos electrónicos
 - Ethereal Email permite visualizar los correos electrónicos enviados desde tu aplicación sin necesidad de utilizar un servidor de correo real.
+- Joi para la validacion de los datos de entrada
+- Jest para las pruebas unitarias
 
 ## Estructura del Proyecto
 
@@ -32,6 +35,12 @@
 |-- db
 
     |-- entities
+
+|-- middleware
+
+|-- routes
+
+|-- tests
 
 |-- util
 
@@ -60,10 +69,19 @@ La aplicación tiene una documentación de swagger que se puede encontrar en la 
 1. Clientes: /clientes
     - Lista de clientes sin visivilizar datos sensibles
     - Crear clientes con su tarjeta y credenciales de login
+    - Actualiza clientes a traves del id
+    - Elimina clientes a traves del id
 2. Inicio de sesiones: /login
     - Logea el cliente e identifica si es asesor o no
 3. Aprobar tarjetas: /aprobar-tarjeta
     - Aprueba o desaprueba creacion de tarjeta, generando el monto del prestamo y la categoria de la tarjeta, al mismo tiempo que envia un correo informativo
+    - Lista las tarjetas
+    - Elimina tarjetas
+4. Asesores: /asesores
+    - Crear asesor con sus credenciales de login
+    - Elimina asesores
+    - Actualiza asesores con parametro id
+    - Elimina asesor con parametro id
 
 ## Contribución
 
@@ -80,8 +98,6 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 
 ## Mejoras pendientes
 - Creacion de usuario los datos deben se unicos y validados
-- Validaciones con joi
-- pruebas unitarias con jest
 
 ## Funcionalidades Pendiente
 - Modificar y Recuperar contraseña
