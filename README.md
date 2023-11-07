@@ -101,6 +101,5 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 
 ## Funcionalidades Pendiente
 - Modificar y Recuperar contraseña
-- Visivilizar tarjetas pendientes
 - Realizar transaccion
 - Inteses de las transacciones

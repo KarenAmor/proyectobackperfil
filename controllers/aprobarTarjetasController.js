@@ -10,7 +10,32 @@ async function getTarjetas(req, res) {
   const tarjetasRepository = getRepository(Tarjetas);
 
   try {
-    const tarjetas = await tarjetasRepository.find();
+    const { id, numero_tarjeta, tipo_tarjeta, estado_solicitud, fecha_creacion } = req.query;
+
+    let query = tarjetasRepository.createQueryBuilder('tarjetas');
+
+    if (id) {
+      query = query.where('tarjetas.id = :id', { id });
+    }
+
+    if (numero_tarjeta) {
+      query = query.andWhere('tarjetas.numero_tarjeta = :numero_tarjeta', { numero_tarjeta });
+    }
+
+    if (tipo_tarjeta) {
+      query = query.andWhere('tarjetas.tipo_tarjeta = :tipo_tarjeta', { tipo_tarjeta });
+    }
+
+    if (estado_solicitud) {
+      query = query.andWhere('tarjetas.estado_solicitud = :estado_solicitud', { estado_solicitud });
+    }
+
+    if (fecha_creacion) {
+      query = query.andWhere('tarjetas.fecha_creacion = :fecha_creacion', { fecha_creacion });
+    }
+
+    const tarjetas = await query.getMany();
+
     res.status(200).json(tarjetas);
   } catch (error) {
     console.error("Error al obtener las tarjetas:", error);
