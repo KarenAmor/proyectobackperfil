@@ -42,4 +42,57 @@ async function iniciarSesion(req, res) {
   }
 }
 
-module.exports = { iniciarSesion };
+async function modificarContrasena(req, res) {
+  const connection = await connectToDatabase();
+  const credentialsRepository = getRepository(Credenciales);
+
+  const { dni, oldPassword, newPassword } = req.body;
+
+  try {
+    const credentials = await credentialsRepository.findOne({ where: { dni } });
+
+    if (!credentials) {
+      return res.status(404).send({ message: "Credenciales no encontradas" });
+    }
+
+    const passwordMatch = await bcrypt.compare(oldPassword, credentials.password);
+
+    if (!passwordMatch) {
+      return res.status(401).send({ message: "La contraseña actual no coincide" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    credentials.password = hashedPassword;
+
+    await credentialsRepository.save(credentials);
+
+    res.status(200).json({ message: "Contraseña modificada exitosamente" });
+  } catch (error) {
+    console.error("Error al modificar la contraseña:", error);
+    res.status(500).send({ error: "Error al modificar la contraseña" });
+  }
+}
+
+async function recuperarContrasena(req, res) {
+  const connection = await connectToDatabase();
+  const credentialsRepository = getRepository(Credenciales);
+
+  const { dni } = req.body;
+
+  try {
+    const credentials = await credentialsRepository.findOne({ where: { dni } });
+
+    if (!credentials) {
+      return res.status(404).send({ message: "No se encontraron credenciales para este DNI" });
+    }
+
+    // Aquí puedes implementar la lógica para enviar un correo electrónico con la contraseña temporal o un enlace para restablecer la contraseña.
+
+    res.status(200).json({ message: "Se ha enviado la información de recuperación de contraseña" });
+  } catch (error) {
+    console.error("Error al recuperar la contraseña:", error);
+    res.status(500).send({ error: "Error al recuperar la contraseña" });
+  }
+}
+
+module.exports = { iniciarSesion, modificarContrasena, recuperarContrasena };
