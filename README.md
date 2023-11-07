@@ -100,6 +100,5 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 - Creacion de usuario los datos deben se unicos y validados
 
 ## Funcionalidades Pendiente
-- Modificar y Recuperar contraseña
 - Realizar transaccion
 - Inteses de las transacciones
