@@ -72,9 +72,9 @@ La aplicación tiene una documentación de swagger que se puede encontrar en la 
     - Actualiza clientes a traves del id
     - Elimina clientes a traves del id
 2. Inicio de sesiones: /login
-    - Logea el cliente e identifica si es asesor o no
+    - Logea el cliente e identifica si es asesor, gerente o cliente normal
 3. Aprobar tarjetas: /aprobar-tarjeta
-    - Aprueba o desaprueba creacion de tarjeta, generando el monto del prestamo y la categoria de la tarjeta, al mismo tiempo que envia un correo informativo
+    - Aprueba o desaprueba creacion de tarjeta, generando el monto del prestamo y la categoria de la tarjeta, al mismo tiempo que envia un correo informativo (post y put)
     - Lista las tarjetas
     - Elimina tarjetas
 4. Asesores: /asesores
@@ -98,7 +98,14 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 
 ## Mejoras pendientes
 - Creacion de usuario los datos deben se unicos y validados
+- Actualizar validaciones
 
 ## Funcionalidades Pendiente
 - Realizar transaccion
 - Inteses de las transacciones
+- Correo cambio contraseña
+- Correo transacciones
+- Login con token
+- Credenciales secretas para correo, puerto
+- Realizar test
+- "Agregar inteligencia artificial"

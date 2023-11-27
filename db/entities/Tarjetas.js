@@ -40,13 +40,6 @@ const Tarjetas = new EntitySchema({
       createDate: true
     }
   },
-  relations: {
-    cliente: {
-      type: "many-to-one",
-      target: "Clientes",
-      inverseSide: "numero_tarjeta", // Nombre de la propiedad en la entidad Clientes que se refiere a las tarjetas
-    },
-  },
 });
 
 module.exports = Tarjetas;

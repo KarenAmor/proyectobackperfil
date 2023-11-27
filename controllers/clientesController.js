@@ -33,18 +33,24 @@ async function crearCliente(req, res) {
     numero_tarjeta: generarNumeroTarjeta(),
     dni: req.body.dni,
     email: req.body.email,
-    sueldo_neto: req.body.sueldo_neto
+    sueldo_neto: req.body.sueldo_neto,
+    codigo_asesor: req.body.codigo_asesor
   };
 
   // Crear una nueva tarjeta para el cliente
   const tarjeta = tarjetasRepository.create({
     numero_tarjeta: cliente.numero_tarjeta,
     codigo_seguridad: generarCodigoSeguridad(),
-    estado_solicitud: req.body.estado_solicitud || "pendiente" // Establece el estado_solicitud
+    estado_solicitud: req.body.estado_solicitud || "pendiente",// Establece el estado_solicitud
+    clienteId: cliente.id 
   });
-  const newTarjeta = await tarjetasRepository.save(tarjeta);
-
   const clienteNuevo = await clientRepository.save(cliente);
+  const clienteId = clienteNuevo.id;
+  
+  // Agrega el clienteId del cliente a la tarjeta
+  tarjeta.clienteId = clienteId;
+  
+  const newTarjeta = await tarjetasRepository.save(tarjeta);
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   // Crear las credenciales para el cliente
@@ -102,20 +108,23 @@ async function eliminarCliente(req, res) {
   const connection = await connectToDatabase();
   const clientRepository = getRepository(Clientes);
 
-  const { id } = req.params; // Suponiendo que el id del cliente se pasa como parámetro
+  const { id } = req.params; 
 
   try {
-    const cliente = await clientRepository.findOne({ where: { id: id } });
+    const cliente = await clientRepository.findOne({ where: { id } });
     if (!cliente) {
       return res.status(404).send({ message: "Cliente no encontrado" });
     }
 
-    await clientRepository.remove(cliente); // Elimina el cliente de la base de datos
-    res.status(200).json({ message: "Cliente eliminado con éxito", cliente: cliente });
+    // Elimina el cliente
+    await clientRepository.delete(cliente);
+
+    res.status(200).json({ message: "Cliente eliminado con éxito", cliente });
   } catch (error) {
     console.error("Error al eliminar el cliente:", error);
     res.status(500).send({ error: "Error al eliminar el cliente" });
   }
 }
+
 
 module.exports = { getClientes, crearCliente, actualizarCliente, eliminarCliente };

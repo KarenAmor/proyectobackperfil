@@ -7,18 +7,30 @@ const Asesores = new EntitySchema({
     id: {
       type: Number,
       primary: true,
-      generated: true
+      generated: true,
     },
     nombre: {
-      type: "varchar"
+      type: "varchar",
+    },
+    apellido: {
+      type: "varchar",
     },
     dni: {
-      type: "varchar"
+      type: "varchar",
     },
     rol: {
-      type: "varchar"
-    }
-  }
+      type: "varchar",
+    },
+    telefono: {
+      type: "varchar",
+    },
+    correo: {
+      type: "varchar",
+    },
+    codigo_asesor: {
+      type: "varchar",
+    },
+  },
 });
 
 module.exports = Asesores;

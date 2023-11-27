@@ -40,12 +40,19 @@ const Clientes = new EntitySchema({
       scale: 2,
       nullable: false,
     },
+    codigo_asesor: {
+      type: "varchar", // Adjust the type based on the data type you intend to use for the codigo_asesor column
+      nullable: true, // Adjust the nullable property based on your requirements
+    },
   },
   relations: {
-    tarjetas: {
-      type: "one-to-many",
-      target: "Tarjetas",
-      inverseSide: "numero_tarjeta", // Asegúrate de que coincida con el nombre de la propiedad en la entidad Tarjetas
+    asesor: {
+      type: "many-to-many",
+      target: "Asesores",
+      joinColumn: {
+        name: "codigo_asesor",
+        referencedColumnName: "codigo_asesor",
+      },
     },
     producto: {
       type: "many-to-one",
@@ -54,7 +61,7 @@ const Clientes = new EntitySchema({
         name: "productoId",
         referencedColumnName: "id",
       },
-    }, // Aquí se añadió la llave de cierre que faltaba
+    },
   },
 });
 

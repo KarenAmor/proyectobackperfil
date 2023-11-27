@@ -131,7 +131,7 @@ async function eliminarTarjeta(req, res) {
   try {
     const connection = await connectToDatabase();
     const tarjetasRepository = getRepository(Tarjetas);
-    const { id } = req.params.id;
+    const { id } = req.params;
 
     if (req.user.role !== "asesor") {
       return res.status(401).send({ message: "Acceso no autorizado" });
