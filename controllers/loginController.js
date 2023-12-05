@@ -3,6 +3,7 @@ const { connectToDatabase } = require("../database");
 const Clientes = require("../db/entities/Clientes");
 const Asesores = require("../db/entities/Asesores"); 
 const Credenciales = require("../db/entities/Credenciales");
+const sendMail = require('../util/correoRecuperarContrasena');
 const bcrypt = require('bcryptjs');
 
 async function iniciarSesion(req, res) {
@@ -76,16 +77,27 @@ async function modificarContrasena(req, res) {
 async function recuperarContrasena(req, res) {
   const connection = await connectToDatabase();
   const credentialsRepository = getRepository(Credenciales);
+  const clientRepository = getRepository(Clientes);
 
   const { dni } = req.body;
 
   try {
     const credentials = await credentialsRepository.findOne({ where: { dni } });
+    const cliente = await clientRepository.findOne({
+      where: { dni },
+    });
 
+    if (!cliente) {
+      return res.status(404).send({ message: "Cliente no encontrado" });
+    }
+    //con el dni debe traer la contraseña que esta en la tabla credenciales.password,nombre y apellido del cliente
+    const email = cliente.email;
+    const subject = 'Recuperar Contrasena';
+    const templatePath = '../util/recuperarContrasena.html';
     if (!credentials) {
       return res.status(404).send({ message: "No se encontraron credenciales para este DNI" });
     }
-
+    await sendMail(email, subject, templatePath, cliente.nombre, cliente.apellido)
     // Aquí puedes implementar la lógica para enviar un correo electrónico con la contraseña temporal o un enlace para restablecer la contraseña.
 
     res.status(200).json({ message: "Se ha enviado la información de recuperación de contraseña" });

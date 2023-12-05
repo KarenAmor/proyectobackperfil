@@ -8,7 +8,7 @@ const autenticacionMiddleware = require('./middleware/autenticacionMiddleware');
 
 const clientesRoutes = require("./routes/clientesRoutes");
 const loginRoutes = require("./routes/loginRoutes");
-const aprobarTajetasRoutes = require("./routes/aprobarTarjetasRoutes"); 
+const tarjetasRoutes = require("./routes/tarjetasRoutes"); 
 const asesoresRoutes = require("./routes/asesoresRoutes");
 
 const app = express();
@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 
 app.use("/clientes", clientesRoutes);
 app.use("/login", loginRoutes);
-app.use("/aprobar-tarjeta", aprobarTajetasRoutes);
+app.use("/tarjetas", tarjetasRoutes);
 app.use("/asesores", asesoresRoutes);
 
 /* Catch Validation error */

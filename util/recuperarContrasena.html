@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recuperación de Contraseña</title>
+  <style>
+    body {
+      background-color: #f3ebf6;
+      font-family: sans-serif;
+      font-size: 16px;
+      color: #333;
+    }
+
+    h1 {
+      color: #6a0dad;
+      font-size: 24px;
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 10px;
+      color: #4a4a4a;
+    }
+
+    p.saludos {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Recuperación de Contraseña</h1>
+  <p class="saludos">Estimado usuario, <%= nombre %> <%= apellido %></p>
+  <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Si no realizaste esta solicitud, puedes ignorar este correo.</p>
+  <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
+  <p><a href="<%= enlace_reset_contraseña %>"><%= enlace_reset_contraseña %></a></p>
+  <p>Este enlace expirará en 2 horas.</p>
+  <p>Si tienes algún problema o pregunta, no dudes en ponerte en contacto con nuestro equipo de soporte.</p>
+  <p>Saludos,</p>
+  <p>Tu equipo de soporte</p>
+</body>
+</html>

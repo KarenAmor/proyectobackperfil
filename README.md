@@ -103,7 +103,6 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 ## Funcionalidades Pendiente
 - Realizar transaccion
 - Inteses de las transacciones
-- Correo cambio contraseña
 - Correo transacciones
 - Login con token
 - Credenciales secretas para correo, puerto
