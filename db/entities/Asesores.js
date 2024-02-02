@@ -31,6 +31,16 @@ const Asesores = new EntitySchema({
       type: "varchar",
     },
   },
+  relations: {
+    clientes: {
+      type: "many-to-many",
+      target: "Clientes",
+      inverseJoinColumn: {
+        name: "codigo_asesor",
+        referencedColumnName: "codigo_asesor",
+      },
+    },
+  },
 });
 
 module.exports = Asesores;

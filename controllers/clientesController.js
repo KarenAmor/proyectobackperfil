@@ -3,128 +3,123 @@ const { connectToDatabase } = require("../database");
 const Clientes = require("../db/entities/Clientes");
 const Credenciales = require("../db/entities/Credenciales");
 const Tarjetas = require("../db/entities/Tarjetas");
+const Asesores = require("../db/entities/Asesores"); // Ajusta la ruta según la ubicación real de tus entidades
+const Productos = require("../db/entities/Productos"); // Ajusta la ruta según la ubicación real de tus entidades
+
 const bcrypt = require('bcryptjs');
 
+const ESTADO_SOLICITUD_PENDIENTE = "pendiente";
+
 async function getClientes(req, res) {
-  const connection = await connectToDatabase();
-  const clientRepository = getRepository(Clientes);
-  const clientes = await clientRepository.find();
-  res.status(200).json(clientes);
+  try {
+    const connection = await connectToDatabase();
+    const clientRepository = getRepository(Clientes);
+    const clientes = await clientRepository.find();
+    res.status(200).json(clientes);
+  } catch (error) {
+    console.error("Error al obtener clientes:", error);
+    res.status(500).send({ error: "Hubo un error al obtener clientes" });
+  }
 }
 
-// Genera un número de tarjeta aleatorio
 function generarNumeroTarjeta() {
   return Math.floor(Math.random() * 99999999999) + 10000000000;
 }
-// Genera un número aleatorio de tres dígitos
+
 function generarCodigoSeguridad() {
-  return Math.floor(100 + Math.random() * 900); 
+  return Math.floor(100 + Math.random() * 900);
 }
 
 async function crearCliente(req, res) {
-  const connection = await connectToDatabase();
-  const clientRepository = getRepository(Clientes);
-  const credentialsRepository = getRepository(Credenciales);
-  const tarjetasRepository = getRepository(Tarjetas);
-
-  const cliente = {
-    nombre: req.body.nombre,
-    apellido: req.body.apellido,
-    numero_tarjeta: generarNumeroTarjeta(),
-    dni: req.body.dni,
-    email: req.body.email,
-    sueldo_neto: req.body.sueldo_neto,
-    codigo_asesor: req.body.codigo_asesor
-  };
-
-  // Crear una nueva tarjeta para el cliente
-  const tarjeta = tarjetasRepository.create({
-    numero_tarjeta: cliente.numero_tarjeta,
-    codigo_seguridad: generarCodigoSeguridad(),
-    estado_solicitud: req.body.estado_solicitud || "pendiente",// Establece el estado_solicitud
-    clienteId: cliente.id 
-  });
-  const clienteNuevo = await clientRepository.save(cliente);
-  const clienteId = clienteNuevo.id;
-  
-  // Agrega el clienteId del cliente a la tarjeta
-  tarjeta.clienteId = clienteId;
-  
-  const newTarjeta = await tarjetasRepository.save(tarjeta);
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-  // Crear las credenciales para el cliente
-  const credenciales = {
-    dni: req.body.dni,
-    password: hashedPassword,
-  };
-
   try {
+    const connection = await connectToDatabase();
+    const clientRepository = getRepository(Clientes);
+    const credentialsRepository = getRepository(Credenciales);
+    const tarjetasRepository = getRepository(Tarjetas);
+
+    // Validar datos de entrada
+    const { nombre, apellido, dni, email, sueldo_neto, codigo_asesor, password } = req.body;
+    if (!nombre || !apellido || !dni || !email || !sueldo_neto || !codigo_asesor || !password) {
+      return res.status(400).json({ error: "Faltan datos obligatorios para crear el cliente" });
+    }
+
+    const cliente = {
+      nombre,
+      apellido,
+      numero_tarjeta: generarNumeroTarjeta(),
+      dni,
+      email,
+      sueldo_neto,
+      codigo_asesor
+    };
+
+    const tarjeta = tarjetasRepository.create({
+      numero_tarjeta: cliente.numero_tarjeta,
+      codigo_seguridad: generarCodigoSeguridad(),
+      estado_solicitud: req.body.estado_solicitud || ESTADO_SOLICITUD_PENDIENTE,
+    });
+
+    const clienteNuevo = await clientRepository.save(cliente);
+    const clienteId = clienteNuevo.id;
+
+    tarjeta.clienteId = clienteId;
+    const newTarjeta = await tarjetasRepository.save(tarjeta);
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const credenciales = {
+      dni,
+      password: hashedPassword,
+    };
+
     await credentialsRepository.save(credenciales);
     res.status(201).json({ message: "Cliente y credenciales creadas con éxito", cliente: clienteNuevo, tarjeta: newTarjeta, credenciales: credenciales });
   } catch (error) {
-    console.error("Error al guardar las credenciales:", error);
-    res.status(500).send({ error: "Hubo un error al guardar las credenciales" });
+    console.error("Error al crear el cliente:", error);
+    res.status(500).send({ error: "Hubo un error al crear el cliente y sus credenciales" });
   }
 }
 
 async function actualizarCliente(req, res) {
-  const connection = await connectToDatabase();
-  const clientRepository = getRepository(Clientes);
-
-  const { id } = req.params; // Suponiendo que el id del cliente se pasa como parámetro
-
   try {
-    const cliente = await clientRepository.findOne({ where: { id: id } });
+    const connection = await connectToDatabase();
+    const clientRepository = getRepository(Clientes);
+
+    const { id } = req.params;
+    const cliente = await clientRepository.findOne({ where: { id } });
+
     if (!cliente) {
-      return res.status(404).send({ message: "Cliente no encontrado" });
+      return res.status(404).json({ message: "Cliente no encontrado" });
     }
 
-    // Actualiza los campos del cliente según lo que se haya proporcionado en la solicitud
-    if (req.body.nombre) {
-      cliente.nombre = req.body.nombre;
-    }
-    if (req.body.apellido) {
-      cliente.apellido = req.body.apellido;
-    }
-    if (req.body.dni) {
-      cliente.dni = req.body.dni;
-    }
-    if (req.body.email) {
-      cliente.email = req.body.email;
-    }
-    if (req.body.sueldo_neto) {
-      cliente.sueldo_neto = req.body.sueldo_neto;
-    }
+    // Actualiza solo los campos proporcionados en la solicitud
+    Object.assign(cliente, req.body);
 
     await clientRepository.save(cliente);
-    res.status(201).json({ message: "Cliente actualizado con éxito", cliente: cliente });
+    res.status(200).json({ message: "Cliente actualizado con éxito", cliente });
   } catch (error) {
     console.error("Error al actualizar el cliente:", error);
-    res.status(500).send({ error: "Error al actualizar el cliente" });
+    res.status(500).send({ error: "Hubo un error al actualizar el cliente" });
   }
 }
+
 async function eliminarCliente(req, res) {
-  const connection = await connectToDatabase();
-  const clientRepository = getRepository(Clientes);
-
-  const { id } = req.params; 
-
   try {
+    const connection = await connectToDatabase();
+    const clientRepository = getRepository(Clientes);
+
+    const { id } = req.params;
     const cliente = await clientRepository.findOne({ where: { id } });
+
     if (!cliente) {
-      return res.status(404).send({ message: "Cliente no encontrado" });
+      return res.status(404).json({ message: "Cliente no encontrado" });
     }
 
-    // Elimina el cliente
-    await clientRepository.delete(cliente);
-
+    await clientRepository.remove(cliente);
     res.status(200).json({ message: "Cliente eliminado con éxito", cliente });
   } catch (error) {
     console.error("Error al eliminar el cliente:", error);
-    res.status(500).send({ error: "Error al eliminar el cliente" });
+    res.status(500).send({ error: "Hubo un error al eliminar el cliente" });
   }
 }
-
 
 module.exports = { getClientes, crearCliente, actualizarCliente, eliminarCliente };
