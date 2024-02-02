@@ -30,7 +30,7 @@ const Transacciones = new EntitySchema({
       nullable: false,
     },
     tipo_transaccion: {
-      type: "enum",
+      type: "varchar",
       enum: ["compra", "retiro", "transferencia"],
       nullable: false,
     },
