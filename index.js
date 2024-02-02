@@ -10,6 +10,7 @@ const clientesRoutes = require("./routes/clientesRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const tarjetasRoutes = require("./routes/tarjetasRoutes"); 
 const asesoresRoutes = require("./routes/asesoresRoutes");
+const transaccionesRoutes = require("./routes/transaccionesRoutes");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/clientes", clientesRoutes);
 app.use("/login", loginRoutes);
 app.use("/tarjetas", tarjetasRoutes);
 app.use("/asesores", asesoresRoutes);
+app.use("/transacciones", transaccionesRoutes);
 
 /* Catch Validation error */
 app.use((err, req, res, next) => {

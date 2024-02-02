@@ -1,4 +1,4 @@
-const EntitySchema = require("typeorm").EntitySchema;
+const { EntitySchema } = require("typeorm");
 
 const Transacciones = new EntitySchema({
   name: "Transacciones",
@@ -7,32 +7,52 @@ const Transacciones = new EntitySchema({
     id: {
       type: "int",
       primary: true,
-      generated: true
+      generated: true,
     },
     tarjeta: {
-      type: "string",
+      type: "varchar",
       length: 25,
-      nullable: false
+      nullable: false,
     },
     fecha: {
-      type: "date",
-      nullable: false
+      type: "datetime",
+      nullable: false,
     },
     monto: {
-      type: "float",
-      nullable: false
+      type: "decimal",
+      precision: 10, // Ajusta según tus necesidades
+      scale: 2, // Ajusta según tus necesidades
+      nullable: false,
     },
     estado: {
-      type: "string",
+      type: "varchar",
       length: 25,
-      nullable: false
+      nullable: false,
     },
     tipo_transaccion: {
-      type: "string",
-      length: 25,
-      nullable: false
-    }
-  }
+      type: "enum",
+      enum: ["compra", "retiro", "transferencia"],
+      nullable: false,
+    },
+    intereses: {
+      type: "decimal",
+      precision: 10,
+      scale: 2,
+      nullable: true, // Puede ser nulo si no aplica
+    },
+    cuota_manejo: {
+      type: "decimal",
+      precision: 10,
+      scale: 2,
+      nullable: true, // Puede ser nulo si no aplica
+    },
+    valor_total_pagar: {
+      type: "decimal",
+      precision: 10,
+      scale: 2,
+      nullable: false,
+    },
+  },
 });
 
 module.exports = Transacciones;

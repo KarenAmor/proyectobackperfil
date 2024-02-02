@@ -14,7 +14,7 @@ async function connectToDatabase() {
        require("./db/entities/Tarjetas"),
        require("./db/entities/Asesores"),
        require("./db/entities/Productos"),
-      
+       require("./db/entities/Transacciones"),
       ],
     });
   }
