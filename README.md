@@ -70,7 +70,6 @@ La aplicación tiene una documentación de swagger que se puede encontrar en la 
     - Lista de clientes sin visivilizar datos sensibles
     - Crear clientes con su tarjeta y credenciales de login
     - Actualiza clientes a traves del id
-    - Elimina clientes a traves del id
 2. Inicio de sesiones: /login
     - Logea el cliente e identifica si es asesor, gerente o cliente normal
 3. Aprobar tarjetas: /aprobar-tarjeta
@@ -89,7 +88,7 @@ Las contribuciones son bienvenidas. Si deseas contribuir a este proyecto, por fa
 
 ## Autor
 
-Este proyecto fue creado por [Karen Moreno].
+Este proyecto fue creado por [Karen Edith Moreno].
 
 ## Licencia
 
@@ -99,6 +98,7 @@ Este proyecto está licenciado bajo Licencia MIT. Consulta el archivo LICENSE pa
 ## Mejoras pendientes
 - Creacion de usuario los datos deben se unicos y validados
 - Actualizar validaciones
+- Para eliminar un cliente se debe realizar eliminacion de tarjeta y asesor
 
 ## Funcionalidades Pendiente
 - Realizar transaccion

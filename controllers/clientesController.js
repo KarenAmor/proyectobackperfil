@@ -102,24 +102,5 @@ async function actualizarCliente(req, res) {
   }
 }
 
-async function eliminarCliente(req, res) {
-  try {
-    const connection = await connectToDatabase();
-    const clientRepository = getRepository(Clientes);
 
-    const { id } = req.params;
-    const cliente = await clientRepository.findOne({ where: { id } });
-
-    if (!cliente) {
-      return res.status(404).json({ message: "Cliente no encontrado" });
-    }
-
-    await clientRepository.remove(cliente);
-    res.status(200).json({ message: "Cliente eliminado con éxito", cliente });
-  } catch (error) {
-    console.error("Error al eliminar el cliente:", error);
-    res.status(500).send({ error: "Hubo un error al eliminar el cliente" });
-  }
-}
-
-module.exports = { getClientes, crearCliente, actualizarCliente, eliminarCliente };
+module.exports = { getClientes, crearCliente, actualizarCliente};
