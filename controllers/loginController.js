@@ -1,15 +1,16 @@
 const { getRepository } = require("typeorm");
 const { connectToDatabase } = require("../database");
 const Clientes = require("../db/entities/Clientes");
-const Asesores = require("../db/entities/Asesores"); 
+const Asesores = require("../db/entities/Asesores");
 const Credenciales = require("../db/entities/Credenciales");
 const sendMail = require('../util/correoRecuperarContrasena');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 async function iniciarSesion(req, res) {
   const connection = await connectToDatabase();
   const clientRepository = getRepository(Clientes);
-  const asesoresRepository = getRepository(Asesores); 
+  const asesoresRepository = getRepository(Asesores);
   const credentialsRepository = getRepository(Credenciales);
 
   const { dni, password } = req.body;
@@ -32,13 +33,27 @@ async function iniciarSesion(req, res) {
     // Verifica si el DNI está presente en la tabla de asesores
     const asesor = await asesoresRepository.findOne({ where: { dni } });
 
+    console.log('Datos del cliente:', cliente); // Imprime los datos del cliente
+
+    // Ahora, creamos un token JWT con la información del usuario
+    try {
+      const token = jwt.sign(
+        { userId: cliente.id, dni: cliente.dni, role: asesor ? 'asesor' : 'cliente' },
+        'tu_secreto',
+        { expiresIn: '1h' }
+      );
+      console.log('Token generado:', token); // Imprime el token generado
+    } catch (tokenError) {
+      console.error('Error al generar el token:', tokenError); // Imprime el error al generar el token
+    }
+
     if (asesor) {
-      res.status(200).json({ message: "Inicio de sesión exitoso, Asesor", cliente });
+      res.status(200).json({ message: "Inicio de sesión exitoso, Asesor", cliente, token });
     } else {
       res.send({ message: "Inicio de sesión exitoso, Bienvenido", cliente });
     }
   } catch (error) {
-    console.error("Error al iniciar sesión:", error);
+    console.error("Error al iniciar sesión:", error); // Imprime el error al iniciar sesión
     res.status(500).send({ error: "Error al iniciar sesión" });
   }
 }
